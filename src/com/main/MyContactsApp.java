@@ -65,9 +65,20 @@ public class MyContactsApp
 
 				contactRepo.save(contact);
 
-	            System.out.println("Contact Created: " + contact.getName());
+	            System.out.println("Contact Created: " + contact.getName()); 
+	            
+	            // UC-05 View Contact with Decorators
+
+	            ContactView view = new SimpleContactView(contact);
+
+	            view = new MaskedEmailDecorator(view);
+	            view = new UpperCaseDecorator(view);
+
+	            System.out.println("\nContact Details:");
+	            System.out.println(view.display());
 
 	        }
 
 	    }
+
 	}
