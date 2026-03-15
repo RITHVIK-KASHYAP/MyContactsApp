@@ -9,50 +9,53 @@ import com.user.*;
 public class MyContactsApp 
 {
 
-    public static void main(String[] args) 
-    {
+	 public static void main(String[] args) {
 
-        UserRepository repo = new UserRepository();
+	        UserRepository repo = new UserRepository();
 
-        User user = UserFactory.createUser(
-                "FREE",UUID.randomUUID().toString(),
-                "rithvik@email.com",
-                "password123",
-                "Rithvik"
-        );
+	        // UC-01 Registration
+	        User user = UserFactory.createUser(
+	                "FREE",
+	                UUID.randomUUID().toString(),
+	                "rithvik@email.com",
+	                "password123",
+	                "Rithvik"
+	        );
 
-        repo.save(user);
+	        repo.save(user);
 
-        System.out.println("User Registered: " + user.getName());
+	        System.out.println("User Registered: " + user.getName());
 
 
+	        // UC-02 Authentication
 
-        // UC-02 Authentication
+	        AuthenticationStrategy auth = new BasicAuth();
 
-        AuthenticationStrategy authStrategy = new BasicAuth();
+	        Optional<User> logged =
+	                auth.authenticate(
+	                        "rithvik@email.com",
+	                        "password123",
+	                        repo
+	                );
 
-        Optional<User> loggedUser =
-                authStrategy.authenticate(
-                        "rithvik@email.com",
-                        "password123",
-                        repo
-                );
+	        if (logged.isPresent()) {
 
-        if (loggedUser.isPresent()) 
-        {
+	            SessionManager.getInstance().login(logged.get());
 
-            SessionManager.getInstance().login(loggedUser.get());
+	            System.out.println("Login Successful");
 
-            System.out.println("Login Successful: "
-                    + loggedUser.get().getName());
 
-        } 
-        else 
-        {
+	            // UC-03 Profile Management
 
-            System.out.println("Login Failed");
+	            CommandManager manager = new CommandManager();
 
-        }
+	            manager.executeCommand(new UpdateNameCommand(logged.get(), "Rithvik Kashyap"));
 
-    }
-}
+	            manager.executeCommand(new UpdateEmailCommand(logged.get(), "rithvikkashyap@email.com"));
+
+	            manager.undo();   // undo email update
+
+	        }
+
+	    }
+	}
