@@ -88,6 +88,17 @@ public class MyContactsApp
 	            // undo last operation
 
 	            editor.undo();
+	            // UC-07 Delete Contact
+
+	            ContactLifecycleManager lifecycle = new ContactLifecycleManager(contactRepo);
+
+	            lifecycle.registerObserver(new DeletionLogger());
+
+	            // Soft delete
+	            lifecycle.softDelete(contact);
+
+	            // Hard delete
+	            lifecycle.hardDelete(contact);
 
 	        }
 
