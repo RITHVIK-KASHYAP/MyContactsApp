@@ -1,13 +1,13 @@
 package com.main;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import com.repository.*;
 import com.search.*;
 import com.user.*;
 import com.bulk.*;
 import com.contact.*;
+import com.filter.*;
 import com.group.*;
 
 
@@ -161,6 +161,33 @@ public class MyContactsApp
 
 	            searchService
 	                    .search(contactRepo.findAll().values(), combined)
+	                    .forEach(c -> System.out.println(c.getName()));
+	            
+	            // UC-10 Filtering and Sorting
+
+	            ContactFilterContext filterContext = new ContactFilterContext();
+
+	            // filter recent contacts
+	            filterContext.setFilterStrategy(new RecentContactFilter());
+
+	            // sort by name
+	            filterContext.setSortStrategy(new NameSortStrategy());
+
+	            System.out.println("\nFiltered and Sorted Contacts:");
+
+	            filterContext
+	                    .execute(new ArrayList<>(contactRepo.findAll().values()))
+	                    .forEach(c -> System.out.println(c.getName()));
+
+
+	            // change sorting strategy dynamically
+
+	            filterContext.setSortStrategy(new DateSortStrategy());
+
+	            System.out.println("\nSorted by Creation Date:");
+
+	            filterContext
+	                    .execute(new ArrayList<>(contactRepo.findAll().values()))
 	                    .forEach(c -> System.out.println(c.getName()));
 
 	        }
