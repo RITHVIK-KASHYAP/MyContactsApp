@@ -5,6 +5,15 @@ import com.contact.*;
 public class TagService 
 {
 
+    private TagChangeManager manager;
+
+    public TagService(TagChangeManager manager) 
+    {
+
+        this.manager = manager;
+
+    }
+
     public void addTag(Contact contact, String tagName) 
     {
 
@@ -12,7 +21,7 @@ public class TagService
 
         contact.addTag(tag);
 
-        System.out.println("Tag added: " + tag.getName());
+        manager.notifyTagAdded(contact.getName(), tagName);
 
     }
 

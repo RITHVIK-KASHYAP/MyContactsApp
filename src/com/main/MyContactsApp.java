@@ -192,7 +192,13 @@ public class MyContactsApp
 	                    .forEach(c -> System.out.println(c.getName()));
 	           // UC-11 Tagging System
 
-	            TagService tagService = new TagService();
+	            TagChangeManager tagManager =  new TagChangeManager();
+
+	            tagManager.registerObserver(
+	                    new TagLogger()
+	            );
+
+	            TagService tagService = new TagService(tagManager);
 
 	            tagService.addTag(contact, "Work");
 	            tagService.addTag(contact, "Manager");
@@ -204,7 +210,33 @@ public class MyContactsApp
 
 	            contact.getTags()
 	                    .forEach(t -> System.out.println(t.getName()));
+	            
+	            // UC-12 Tag Observer + Tag Search
 
+	            TagChangeManager tagManager1 = new TagChangeManager();
+
+	            TagLogger logger = new TagLogger();
+
+	            tagManager1.registerObserver(logger);
+
+	            // updated tag service
+	            TagService tagService2 = new TagService(tagManager1);
+
+	            // add tags
+
+	            tagService2.addTag(contact, "Family");
+	            tagService2.addTag(contact2, "Work");
+
+
+	            // search by tag
+
+	            TagSearchService tagSearch = new TagSearchService();
+
+	            System.out.println("\nContacts with tag 'Work':");
+
+	            tagSearch
+	                    .searchByTag(contactRepo.findAll().values(), "Work")
+	                    .forEach(c -> System.out.println(c.getName()));
 	        }
 
 	    }
