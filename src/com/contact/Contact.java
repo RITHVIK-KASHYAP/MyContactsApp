@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.tag.*;
+
+import java.util.Set;
+import java.util.HashSet;
+
 public abstract class Contact 
 {
 
@@ -13,6 +18,7 @@ public abstract class Contact
 
     private List<PhoneNumber> phones = new ArrayList<>();
     private List<Email> emails = new ArrayList<>();
+    private Set<Tag> tags = new HashSet<>();
 
     private LocalDateTime createdAt;
 
@@ -73,6 +79,19 @@ public abstract class Contact
     public void setDeleted(boolean deleted) 
     {
         this.deleted = deleted;
+    }
+    public void addTag(Tag tag) 
+    {
+
+        tags.add(tag);
+
+    }
+
+    public Set<Tag> getTags() 
+    {
+
+        return tags;
+
     }
 
 }

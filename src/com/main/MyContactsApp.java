@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.repository.*;
 import com.search.*;
+import com.tag.*;
 import com.user.*;
 import com.bulk.*;
 import com.contact.*;
@@ -189,6 +190,20 @@ public class MyContactsApp
 	            filterContext
 	                    .execute(new ArrayList<>(contactRepo.findAll().values()))
 	                    .forEach(c -> System.out.println(c.getName()));
+	           // UC-11 Tagging System
+
+	            TagService tagService = new TagService();
+
+	            tagService.addTag(contact, "Work");
+	            tagService.addTag(contact, "Manager");
+
+	            tagService.addTag(contact2, "Work");
+	            tagService.addTag(contact2, "Friend");
+
+	            System.out.println("\nContact Tags:");
+
+	            contact.getTags()
+	                    .forEach(t -> System.out.println(t.getName()));
 
 	        }
 
