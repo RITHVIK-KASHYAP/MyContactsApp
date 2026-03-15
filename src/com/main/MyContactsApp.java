@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.repository.*;
 import com.user.*;
+import com.contact.*;
 
 public class MyContactsApp 
 {
@@ -12,6 +13,7 @@ public class MyContactsApp
 	 public static void main(String[] args) {
 
 	        UserRepository repo = new UserRepository();
+	        ContactRepository contactRepo = new ContactRepository();
 
 	        // UC-01 Registration
 	        User user = UserFactory.createUser(
@@ -53,7 +55,17 @@ public class MyContactsApp
 
 	            manager.executeCommand(new UpdateEmailCommand(logged.get(), "rithvikkashyap@email.com"));
 
-	            manager.undo();   // undo email update
+	            manager.undo();   
+
+	            Contact contact = ContactFactory.createPerson()
+	                            .setName("Rishab")
+	                            .addPhone("999888777")
+	                            .addEmail("rishab@mail.com")
+	                            .build();
+
+				contactRepo.save(contact);
+
+	            System.out.println("Contact Created: " + contact.getName());
 
 	        }
 
