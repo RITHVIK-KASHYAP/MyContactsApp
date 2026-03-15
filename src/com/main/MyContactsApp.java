@@ -1,5 +1,6 @@
 package com.main;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import com.repository.*;
@@ -23,6 +24,35 @@ public class MyContactsApp
         repo.save(user);
 
         System.out.println("User Registered: " + user.getName());
+
+
+
+        // UC-02 Authentication
+
+        AuthenticationStrategy authStrategy = new BasicAuth();
+
+        Optional<User> loggedUser =
+                authStrategy.authenticate(
+                        "rithvik@email.com",
+                        "password123",
+                        repo
+                );
+
+        if (loggedUser.isPresent()) 
+        {
+
+            SessionManager.getInstance().login(loggedUser.get());
+
+            System.out.println("Login Successful: "
+                    + loggedUser.get().getName());
+
+        } 
+        else 
+        {
+
+            System.out.println("Login Failed");
+
+        }
 
     }
 }
