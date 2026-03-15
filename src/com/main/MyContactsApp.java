@@ -5,7 +5,9 @@ import java.util.UUID;
 
 import com.repository.*;
 import com.user.*;
+import com.bulk.*;
 import com.contact.*;
+import com.group.*;
 
 public class MyContactsApp 
 {
@@ -99,6 +101,40 @@ public class MyContactsApp
 
 	            // Hard delete
 	            lifecycle.hardDelete(contact);
+	            
+	           // UC-08 Groups and Bulk Operations
+
+	            Contact contact2 =
+	                    ContactFactory.createPerson()
+	                            .setName("Ghouse")
+	                            .addPhone("777666555")
+	                            .addEmail("bob@mail.com")
+	                            .build();
+
+	            contactRepo.save(contact2);
+
+	            // Wrap contacts as leaf nodes
+
+	            ContactLeaf leaf1 = new ContactLeaf(contact);
+	            ContactLeaf leaf2 = new ContactLeaf(contact2);
+
+	            // Create group
+
+	            ContactGroup friendsGroup =
+	                    new ContactGroup("Friends");
+
+	            friendsGroup.add(leaf1);
+	            friendsGroup.add(leaf2);
+
+	            System.out.println("\nDisplaying Group:");
+
+	            friendsGroup.display();
+
+	            // Bulk delete example
+
+	            BulkDeleteService bulkDelete = new BulkDeleteService(contactRepo);
+
+	            bulkDelete.delete(leaf1);
 
 	        }
 
