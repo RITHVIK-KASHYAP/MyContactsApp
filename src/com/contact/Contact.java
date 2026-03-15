@@ -59,5 +59,9 @@ public abstract class Contact
     {
         return createdAt;
     }
+    public void setName(String name) 
+    {
+        this.name = name;
+    }
 
 }

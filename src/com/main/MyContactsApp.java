@@ -76,6 +76,18 @@ public class MyContactsApp
 
 	            System.out.println("\nContact Details:");
 	            System.out.println(view.display());
+	            // UC-06 Edit Contact
+
+	            ContactEditor editor = new ContactEditor(contact);
+
+	            editor.execute(new UpdateContactNameCommand(contact, "Shekar"));
+
+	            editor.execute(new AddPhoneCommand(contact, "888777666"));
+
+	            editor.execute(new AddEmailCommand(contact, "shekar.work@mail.com"));
+	            // undo last operation
+
+	            editor.undo();
 
 	        }
 
