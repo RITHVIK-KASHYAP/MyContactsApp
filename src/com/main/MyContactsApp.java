@@ -4,10 +4,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.repository.*;
+import com.search.*;
 import com.user.*;
 import com.bulk.*;
 import com.contact.*;
 import com.group.*;
+
 
 public class MyContactsApp 
 {
@@ -135,6 +137,31 @@ public class MyContactsApp
 	            BulkDeleteService bulkDelete = new BulkDeleteService(contactRepo);
 
 	            bulkDelete.delete(leaf1);
+	           // UC-09 Search Contacts
+
+	            ContactSearchService searchService =  new ContactSearchService();
+
+	            // search by name
+
+	            NameSpecification nameSpec =  new NameSpecification("Ghouse");
+
+	            System.out.println("\nSearch by Name:");
+
+	            searchService.search(contactRepo.findAll().values(), nameSpec)
+	                    .forEach(c -> System.out.println(c.getName()));
+
+
+	            // combined search
+
+	            PhoneSpecification phoneSpec = new PhoneSpecification("777");
+
+	            AndSpecification combined =   new AndSpecification(nameSpec, phoneSpec);
+
+	            System.out.println("\nSearch Name + Phone:");
+
+	            searchService
+	                    .search(contactRepo.findAll().values(), combined)
+	                    .forEach(c -> System.out.println(c.getName()));
 
 	        }
 
